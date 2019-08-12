@@ -1,10 +1,4 @@
 <?php
-/**
- * Telegram core system
- * @version 1.0
- * @author David david_ev@icloud.com
- * @link http://www.davidev.it/
- */
 $_['heading_title']             = 'Telegram Core Bot';
 $_['text_list']                 = 'Messaggi/Archivio/Impostazioni';
 $_['log_title']                 = 'Log Telegram Chat';

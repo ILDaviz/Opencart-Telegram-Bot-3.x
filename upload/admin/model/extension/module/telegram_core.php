@@ -1,9 +1,10 @@
 <?php
 /**
- * Telegram core system
- * @version 1.0
- * @author David david_ev@icloud.com
+ * Telegram webhook comuinication
+ * @version 172
+ * @author David Galet
  * @link http://www.davidev.it/
+ *
  */
 class ModelExtensionModuleTelegramCore extends Model {
     public function install(){

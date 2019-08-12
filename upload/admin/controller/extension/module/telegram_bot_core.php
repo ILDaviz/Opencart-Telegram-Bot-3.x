@@ -1,9 +1,10 @@
 <?php
 /**
- * Telegram core system
+ * Telegram webhook comuinication
  * @version 172
- * @author David david_ev@icloud.com
+ * @author David Galet
  * @link http://www.davidev.it/
+ *
  */
 class ControllerExtensionModuleTelegramBotCore extends Controller {
 

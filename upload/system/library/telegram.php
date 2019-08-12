@@ -1,12 +1,11 @@
 <?php
 /**
- * @package		OpenCart
- * @author		Daniel Kerr
- * @copyright	Copyright (c) 2005 - 2017, OpenCart, Ltd. (https://www.opencart.com/)
- * @license		https://opensource.org/licenses/GPL-3.0
- * @link		https://www.opencart.com
-*/
-
+ * Telegram webhook comuinication
+ * @version 1.0
+ * @author David Galet
+ * @link http://www.davidev.it/
+ *
+ */
 /**
 * Log class
 */

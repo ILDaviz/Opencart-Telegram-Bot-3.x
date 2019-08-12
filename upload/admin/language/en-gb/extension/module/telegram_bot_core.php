@@ -1,10 +1,4 @@
 <?php
-/**
- * Telegram core system
- * @version 1.0
- * @author David david_ev@icloud.com
- * @link http://www.davidev.it/
- */
 $_['heading_title']                 = 'Telegram Core Bot';
 $_['text_extension']                = 'Extensions';
 $_['text_success']                  = 'Success: You have modified Core bot Telegram!';

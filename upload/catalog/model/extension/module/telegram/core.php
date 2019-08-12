@@ -1,16 +1,8 @@
 <?php
-
 /**
- * Telegram core comuinication
- * @version 1.0
- * @author David david_ev@icloud.com
- * @link http://www.davidev.it/
- * 
- * Test : view-source:http://www.demo.it/index.php?route=telegram/cron&key=34j5hlkjh2l3kj4h2kl5g2l3kj4h2lkj3h4234
- *  Il mio ip 2.34.200.103
- */
-
-
+ * @author    David Galet
+ * @link    https://www.davidev.it
+*/
 class ModelExtensionModuleTelegramCore extends Model {
 
     public function addMessageInput($data){

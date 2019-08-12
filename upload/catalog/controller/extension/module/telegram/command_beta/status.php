@@ -1,9 +1,8 @@
 <?php
-
 /**
- * Telegram Get Status
- * @version 1.1
- * @author David david_ev@icloud.com
+ * Telegram webhook comuinication
+ * @version 1.0
+ * @author David Galet
  * @link http://www.davidev.it/
  *
  */

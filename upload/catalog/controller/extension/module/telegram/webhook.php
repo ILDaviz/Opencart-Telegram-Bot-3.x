@@ -3,7 +3,7 @@
 /**
  * Telegram webhook comuinication
  * @version 1.0
- * @author David david_ev@icloud.com
+ * @author David Galet
  * @link http://www.davidev.it/
  *
  */
