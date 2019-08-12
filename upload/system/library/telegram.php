@@ -11,7 +11,7 @@
 */
 class Telegram {
 
-    private $key_bot = '891530605:AAE4Fm1jFa7Nc3R-pYzJLXkD3KN2jlmrHj4';
+    private $key_bot = '';
 
     public function setKeybot($key_bot){
         $this->key_bot = $key_bot;
