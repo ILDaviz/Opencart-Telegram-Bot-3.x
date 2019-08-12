@@ -1,0 +1,155 @@
+{#
+ * Telegram core system
+ * @version 1.0
+ * @author David david_ev@icloud.com
+ * @link http://www.davidev.it/
+#}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="rows">
+            {% if chats_data %}
+            <div class='col-md-12'>
+              <div class="panel panel-default">
+                <div class="panel-heading"><a href="{{ back_list }}" data-toggle="tooltip" title="Back in to the list" class="btn btn-default"><i class="fa fa-reply"></i></a>
+                {% if chat_info.chat_first_name %}{{ chat_info.chat_firs_tname }}{% endif %} 
+                {% if chat_info.chat_last_name %}{{ chat_info.chat_last_name }}{% endif %} 
+                {% if chat_info.chat_username %}({{ chat_info.chat_username }}){% endif %}
+                </div>
+                <div class="panel-body" style="overflow-y: scroll;max-height:600px;" id="scroll">
+                    {% for chat_data in chats_data %}
+                      {% if chat_data.event == 'message_input' %}
+                      <blockquote>
+                      {% if chat_data.text %}
+                        <p>{{ chat_data.text }}</p>
+                      {% endif %}
+
+                      {% if chat_data.photo %}
+                        {% for photo_data in chat_data.photo %}
+                          {% if photo_data.height == 800 %}
+                          <a href="{{ photo_data.url }}"><img src="{{ photo_data.file }}" /></a>
+                          {% endif %}
+                        {% endfor %}
+                      {% endif %}
+
+                      {% if chat_data.voice %}
+                        {% for voice_data in chat_data.voice %}
+                          <a href="{{ voice_data.file }}">Download Audio</a>
+                        {% endfor %}
+                      {% endif %}
+
+                      {% if chat_data.video %}
+                        {% for video_data in chat_data.video %}
+                          <video width="540" height="310" controls>
+                            <source src="{{ video_data.file }}" type="video/mp4">
+                          </video>
+                        {% endfor %}
+                      {% endif %}
+
+                      {% if chat_data.document %}
+                        {% for document_data in chat_data.document %}
+                          <a href="{{ document_data.file }}">{{ document_data.file_name }}</a>
+                        {% endfor %}
+                      {% endif %}
+
+                      <footer>{{ chat_footer }} <cite title="Source Title">{{ chat_data.date }}</cite></footer>
+                      </blockquote>
+                      {% else %}
+                      <blockquote class="blockquote-reverse"><p>{{ chat_data.text }}</p><footer>{{ chat_footer }} <cite title="Source Title">{{ chat_data.date }}</cite></footer></blockquote>
+                      {% endif %}
+                    {% endfor %}
+                </div>
+                <script>$('#scroll').scrollTop($('#scroll')[0].scrollHeight);</script>
+                <div class="panel-footer">
+                  <form action="{{ send_message }}" method="post" class="form" id="send_message">
+                    <div class="form-group">
+                        <input name="text" class="form-control" rows="1"></input>
+                    </div>
+                    <button type="submit" class="btn btn-primary">{{ text_send_message }}</button> <a href="{{ refresh }}" data-toggle="tooltip" title="{{ button_refresh }}" class="btn btn-primary"><i class="fa fa-refresh"></i></a>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% else %}
+            <div class='col-md-12'>
+              <div>
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">{{ text_message}}</a></li>
+                  <li role="presentation"><a href="#archived" aria-controls="archived" role="tab" data-toggle="tab">{{ text_archived }}</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="messages">
+                  {% if chats %}
+                    <h2>{{ messages_title }}</h2>
+                    {% for chat in chats %}
+                      <div class="panel panel-default">
+                          <div class="panel-body">
+                            <a href="{{ chat.url }}" data-toggle="tooltip" title="{{ button_list_message }}" class="btn btn-default">
+                            {% if chat.chat_firstname %}{{ chat.chat_firstname }}{% endif %} 
+                            {% if chat.chat_lastname %}{{ chat.chat_lastname }}{% endif %} 
+                            {% if chat.chat_username %}({{ chat.chat_username }}){% endif %}
+                            {% if chat.n_messages > 0 %} <span class="badge">New message {{ chat.n_messages }}</span>{% endif %}
+                            </a> <a href="{{ chat.archived }}" data-toggle="tooltip" class="btn btn-default">{{ archivied_chat }}</a>
+                          </div>
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    <p>{{ text_nomessage }}</p>
+                  {% endif %}
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="archived">
+                    {% if archived_chats %}
+                    <h2>{{ archivied_title }}</h2>
+                    {% for chat in archived_chats %}
+                      <div class="panel panel-default">
+                          <div class="panel-body">
+                            <a href="{{ chat.url }}" data-toggle="tooltip" title="{{ open_message }}" class="btn btn-default">
+                            {% if chat.chat_firstname %}{{ chat.chat_firstname }}{% endif %} 
+                            {% if chat.chat_lastname %}{{ chat.chat_lastname }}{% endif %} 
+                            {% if chat.chat_username %}({{ chat.chat_username }}){% endif %}
+                            {% if chat.n_messages > 0 %} <span class="badge">New message {{ chat.n_messages }}</span>{% endif %}
+                            </a> <a href="{{ chat.archived }}" data-toggle="tooltip" class="btn btn-default">{{ unarchivied_chat }}</a>
+                          </div>
+                      </div>
+                    {% endfor %}
+                    {% else %}
+                    <p>{{ text_noarchived }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

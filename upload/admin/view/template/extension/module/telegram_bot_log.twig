@@ -1,0 +1,78 @@
+{#
+ * Telegram core system
+ * @version 1.0
+ * @author David david_ev@icloud.com
+ * @link http://www.davidev.it/
+#}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-list"></i> {{ log_title }}</h3>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                    <td class="text-left">{{ column_name }}</td>
+                    <td class="text-right">{{ column_date }}</td>
+                    <td class="text-left">{{ column_text }}</td>
+                    <td class="text-right">{{ column_tipology }}</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if logs %}
+                    {% for log in logs %}
+                    <tr>
+                    <td class="text-left">{{ log.name }}</td>
+                    <td class="text-right">{{ log.date }}</td>
+                    <td class="text-left">{{ log.text }}</td>
+                    <td class="text-right">
+                            {% if log.contents %}
+                            {% for content in log.contents %}
+                                <span class="label label-primary">{{ content }}</span>
+                            {% endfor %}
+                            {% endif %}
+                            {% if log.tipology == 'message_triggered' %}
+                            <span class="label label-primary">{{ message_triggered }}</span>
+                            {% elseif log.tipology == 'message_awaiting_reply' %}
+                            <span class="label label-warning">{{ message_awaiting_reply }}</span>
+                            {% elseif log.tipology == 'message_command' %}
+                            <span class="label label-info">{{ message_command }}</span>
+                            {% elseif log.tipology == 'message_replied' %}
+                            <span class="label label-success">{{ message_replied }}</span>
+                            {% else %}
+                            <span class="label label-default">{{ error_no_tipology }}</span>
+                            {% endif %}
+                    </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                    <td class="text-center" colspan="5">{{ text_no_results }}</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 text-left">{{ pagination }}</div>
+                <div class="col-sm-6 text-right">{{ results }}</div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

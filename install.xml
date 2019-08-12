@@ -1,0 +1,67 @@
+<modification>
+  <name>Modification Add Library Bot Telegram</name>
+  <code>Modification Add Library Bot Telegram</code>
+  <version>1.0</version>
+  <author>Davidev</author>
+  <link>http://www.davidev.it</link>
+	<file path="admin/controller/common/column_left.php">
+		<operation>
+			<search index="0"><![CDATA[// Marketing]]></search>
+			<add position="before"><![CDATA[
+
+			$telegram = array();
+			
+			if ($this->config->get('telegram_bot_core_token')) {
+			
+				if ($this->user->hasPermission('access', 'extension/module/telegram_bot_core')) {
+					$telegram[] = array(
+						'name'	   => 'Chat',
+						'href'     => $this->url->link('extension/module/telegram_bot_core/chat', 'user_token=' . $this->session->data['user_token'], true),
+						'children' => array()		
+					);	
+				}
+				
+				if ($this->user->hasPermission('access', 'extension/module/telegram_bot_core')) {	
+					$telegram[] = array(
+						'name'	   => 'Log',
+						'href'     => $this->url->link('extension/module/telegram_bot_core/log', 'user_token=' . $this->session->data['user_token'], true),
+						'children' => array()		
+					);	
+				}
+
+				/*if ($this->user->hasPermission('access', 'extension/module/telegram_bot_core')) {	
+					$telegram[] = array(
+						'name'	   => $this->language->get('text_contact'),
+						'href'     => $this->url->link('extension/module/telegram_bot_core/messages', 'user_token=' . $this->session->data['user_token'], true),
+						'children' => array()		
+					);	
+				}*/
+			}
+
+			if ($this->user->hasPermission('access', 'extension/module/telegram_bot_core')) {
+				$telegram[] = array(
+					'name'	   => 'Settings',
+					'href'     => $this->url->link('extension/module/telegram_bot_core', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()		
+				);
+			}
+
+			if ($this->config->get('telegram_bot_core_token')) {
+			$value_notification = $this->load->controller('extension/module/telegram_bot_core/notification');
+			} else {
+			$value_notification = '';
+			}
+			
+			if ($telegram) {
+				$data['menus'][] = array(
+					'id'       => 'menu-telegram',
+					'icon'	   => 'fa-share-alt', 
+					'name'	   => 'Telegram '.$value_notification,
+					'href'     => '',
+					'children' => $telegram
+				);	
+			}
+			]]></add>
+		</operation>
+	</file>
+</modification>
