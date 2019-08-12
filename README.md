@@ -1,4 +1,4 @@
-# Telegram Bot Opencart 3.X
+# Telegram Bot for Opencart 3.X
  
 ## Overview
 
