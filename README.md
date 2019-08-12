@@ -29,5 +29,5 @@ Come install it?
 8. Done!
 
 ## Change log
-V173 -- Fix install.xml
-V172 -- Relase module
+2. V173 -- Fix install.xml
+1. V172 -- Relase module
