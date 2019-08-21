@@ -208,6 +208,7 @@ class ControllerExtensionModuleTelegramWebhook extends Controller {
             foreach ($triggers as $trigger) {                
                 //if is present "," A Key
                 $trigger_value_keyword_a = strtolower($trigger['trigger_value_keyword_a'][$language_id]['value']);
+
                 if (!empty($trigger_value_keyword_a)) {
                     if (strpos($trigger_value_keyword_a, ',') !== false ) {
                         $keyword_a = $trigger_value_keyword_a; //tempi, quanto 
@@ -228,6 +229,7 @@ class ControllerExtensionModuleTelegramWebhook extends Controller {
 
                 //if is present "," B Key
                 $trigger_value_keyword_b = strtolower($trigger['trigger_value_keyword_b'][$language_id]['value']);
+                
                 if (!empty($trigger_value_keyword_b)) {
                     if (strpos($trigger_value_keyword_b, ',') !== false ) {
                         $keyword_b = $trigger_value_keyword_b; //tempi, quanto 
