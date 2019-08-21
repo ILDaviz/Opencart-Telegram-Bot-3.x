@@ -29,6 +29,7 @@ Come install it?
 8. Done!
 
 ## Change log
+- V180 -- Fix lang for command and trigger
 - V179 -- Fix trigger
 - V173 -- Fix install.xml
 - V172 -- Relase module
