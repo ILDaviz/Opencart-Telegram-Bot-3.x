@@ -211,13 +211,9 @@ class ControllerExtensionModuleTelegramWebhook extends Controller {
                 $presence_b = 0;
                 
                 //if is present "," A Key
-                if (strstr($trigger['trigger_value_keyword_a'][$language_id]['value'], ',')) {
-                    $keywords_a = $trigger['trigger_value_keyword_a'][$language_id]['value']; //tempi, quanto 
-                    if (strpos($string, $keywords_a) == true) {
-                        ++$presence_a;
-                    }
-                } else {
-                    $keyword_a = $trigger['trigger_value_keyword_a'][$language_id]['value']; //tempi, quanto 
+                $trigger_value_keyword_a = strtolower($trigger['trigger_value_keyword_a'][$language_id]['value']);
+                if (strstr($trigger_value_keyword_a, ',')) {
+                    $keyword_a = $trigger_value_keyword_a; //tempi, quanto 
                     $keywords_a = explode(',',$keyword_a);
 
                     foreach ($keywords_a as $ka) {
@@ -225,22 +221,28 @@ class ControllerExtensionModuleTelegramWebhook extends Controller {
                             ++$presence_a;
                         }
                     }
+                } else {
+                    $keywords_a = $trigger_value_keyword_a; //tempi, quanto 
+                    if (strpos($string, $keywords_a) == true) {
+                        ++$presence_a;
+                    }
                 }
 
                 //if is present "," B Key
-                if (strstr($trigger['trigger_value_keyword_b'][$language_id]['value'], ',')) {
-                    $keywords_b = $trigger['trigger_value_keyword_b'][$language_id]['value']; //tempi, quanto 
-                    if (strpos($string, $keywords_b) == true) {
-                        ++$presence_a;
-                    }
-                } else {
-                    $keyword_b = $trigger['trigger_value_keyword_b'][$language_id]['value']; //tempi, quanto 
+                $trigger_value_keyword_b = $trigger['trigger_value_keyword_b'][$language_id]['value'];
+                if (strstr($trigger_value_keyword_b, ',')) {
+                    $keyword_b = $trigger_value_keyword_b; //tempi, quanto 
                     $keywords_b = explode(',',$keyword_a);
 
                     foreach ($keywords_b as $ka) {
                         if (strpos($string, $ka) == true) {
                             ++$presence_b;
                         }
+                    }
+                } else {
+                    $keywords_b = $trigger_value_keyword_b; //tempi, quanto 
+                    if (strpos($string, $keywords_b) == true) {
+                        ++$presence_a;
                     }
                 }
     
