@@ -189,13 +189,13 @@ class ControllerExtensionModuleTelegramBotCore extends Controller {
 			$data['telegram_bot_core_store'] = '';
 		}
 
-		if (isset($this->request->post['telegram_bot_core_language'])) {
-			$data['telegram_bot_core_language'] = $this->request->post['telegram_bot_core_language'];
-		} elseif ($this->config->get('telegram_bot_core_language')) {
-			$data['telegram_bot_core_language'] = $this->config->get('telegram_bot_core_language');
-		} else {
-			$data['telegram_bot_core_language'] = '';
-		}
+		// if (isset($this->request->post['telegram_bot_core_language'])) {
+		// 	$data['telegram_bot_core_language'] = $this->request->post['telegram_bot_core_language'];
+		// } elseif ($this->config->get('telegram_bot_core_language')) {
+		// 	$data['telegram_bot_core_language'] = $this->config->get('telegram_bot_core_language');
+		// } else {
+		// 	$data['telegram_bot_core_language'] = '';
+		// }
 
 		if (isset($this->request->post['telegram_bot_core_command_value'])) {
 			$command_values = $this->request->post['telegram_bot_core_command_value'];
@@ -295,8 +295,8 @@ class ControllerExtensionModuleTelegramBotCore extends Controller {
 		}
 
 		//Estrazione lingue!
-		$this->load->model('localisation/language');
-		$data['languages'] = $this->model_localisation_language->getLanguages();
+		// $this->load->model('localisation/language');
+		// $data['languages'] = $this->model_localisation_language->getLanguages();
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');

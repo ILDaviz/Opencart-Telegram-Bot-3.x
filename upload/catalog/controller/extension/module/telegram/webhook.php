@@ -16,7 +16,7 @@ class ControllerExtensionModuleTelegramWebhook extends Controller {
     private $bot_name = '';
     private $bot_connection = '';
     private $bot_store = '';
-    private $bot_language = '';
+    //private $bot_language = '';
     private $bot_command_value = array();
     private $bot_trigger_value = array();
     private $bot_cron_url = '';
@@ -123,7 +123,7 @@ class ControllerExtensionModuleTelegramWebhook extends Controller {
             $this->bot_status = $this->config->get('telegram_bot_core_status');
             $this->bot_name = $this->config->get('telegram_bot_core_name');
             $this->bot_store = $this->config->get('telegram_bot_core_store');
-            $this->bot_language = $this->config->get('telegram_bot_core_language');
+            //$this->bot_language = $this->config->get('telegram_bot_core_language');
             $this->bot_command_value = $this->config->get('telegram_bot_core_command_value');
             $this->bot_trigger_value = $this->config->get('telegram_bot_core_trigger_value');
             $this->bot_cron_url = $this->config->get('telegram_bot_core_cron_url');
@@ -200,65 +200,70 @@ class ControllerExtensionModuleTelegramWebhook extends Controller {
      */
     private function trigger($string){
         $string = strtolower($string);
-        $language_id = $this->bot_language;
+        $this->load->model('localisation/language');
+        $languages = $this->model_localisation_language->getLanguages();
+        //$language_id = $this->bot_language;
         if (!empty($this->bot_trigger_value)) {
             $triggers = $this->bot_trigger_value;
         }
         if (isset($triggers)) {
-            foreach ($triggers as $trigger) {                
-                //if is present "," A Key
-                $trigger_value_keyword_a = strtolower($trigger['trigger_value_keyword_a'][$language_id]['value']);
-
-                if (!empty($trigger_value_keyword_a)) {
-                    if (strpos($trigger_value_keyword_a, ',') !== false ) {
-                        $keyword_a = $trigger_value_keyword_a; //tempi, quanto 
-                        $keywords_a = explode(',',$keyword_a);
-                        $presence_a = 0;
-                        foreach ($keywords_a as $ka) {
-                            if (strpos($string, $ka) !== false) {
+            foreach ($triggers as $trigger) {  
+                foreach ($languages as $language) {
+                    //if is present "," A Key
+                    $language_id = $language['language_id']; 
+                    $trigger_value_keyword_a = strtolower($trigger['trigger_value_keyword_a'][$language_id]['value']);
+                    if (!empty($trigger_value_keyword_a)) {
+                        if (strpos($trigger_value_keyword_a, ',') !== false ) {
+                            $keyword_a = $trigger_value_keyword_a; //tempi, quanto 
+                            $keywords_a = explode(',',$keyword_a);
+                            $presence_a = 0;
+                            foreach ($keywords_a as $ka) {
+                                $ka = str_replace(' ', '', $ka);
+                                if (strpos($string, $ka) !== false) {
+                                    ++$presence_a;
+                                }
+                            }
+                        } else {
+                            $presence_a = 0;
+                            if (strpos($string, $trigger_value_keyword_a) !== false) {
                                 ++$presence_a;
                             }
                         }
-                    } else {
-                        $presence_a = 0;
-                        if (strpos($string, $trigger_value_keyword_a) !== false) {
-                            ++$presence_a;
-                        }
                     }
-                }
 
-                //if is present "," B Key
-                $trigger_value_keyword_b = strtolower($trigger['trigger_value_keyword_b'][$language_id]['value']);
-                
-                if (!empty($trigger_value_keyword_b)) {
-                    if (strpos($trigger_value_keyword_b, ',') !== false ) {
-                        $keyword_b = $trigger_value_keyword_b; //tempi, quanto 
-                        $keywords_b = explode(',',$keyword_b);
-                         $presence_b = 0;
-                        foreach ($keywords_b as $ka) {
-                            if (strpos($string, $ka) !== false) {
+                    //if is present "," B Key
+                    $trigger_value_keyword_b = strtolower($trigger['trigger_value_keyword_b'][$language_id]['value']);
+                    if (!empty($trigger_value_keyword_b)) {
+                        if (strpos($trigger_value_keyword_b, ',') !== false ) {
+                            $keyword_b = $trigger_value_keyword_b; //tempi, quanto 
+                            $keywords_b = explode(',',$keyword_b);
+                            $presence_b = 0;
+                            foreach ($keywords_b as $ka) {
+                                $ka = str_replace(' ', '', $ka);
+                                if (strpos($string, $ka) !== false) {
+                                    ++$presence_b;
+                                }
+                            }
+                        } else {
+                            $presence_b = 0;
+                            if (strpos($string, $trigger_value_keyword_b) !== false) {
                                 ++$presence_b;
                             }
                         }
+                    }
+        
+                    if ($trigger['role'] == 1) {
+                        if ($presence_a > 0 || $presence_b > 0) {
+                            return $trigger['trigger_value_description'][$language_id]['value'];
+                            exit();
+                        }
                     } else {
-                        $presence_b = 0;
-                        if (strpos($string, $trigger_value_keyword_b) !== false) {
-                            ++$presence_b;
+                        if ($presence_a > 0 && $presence_b > 0) {
+                            return $trigger['trigger_value_description'][$language_id]['value'];
+                            exit();
                         }
                     }
-                }
-    
-                if ($trigger['role'] == 1) {
-                    if ($presence_a > 0 || $presence_b > 0) {
-                        return $trigger['trigger_value_description'][$language_id]['value'];
-                        exit();
-                    }
-                } else {
-                    if ($presence_a > 0 && $presence_b > 0) {
-                        return $trigger['trigger_value_description'][$language_id]['value'];
-                        exit();
-                    }
-                }
+                }              
             }
         } else {
             return '';
@@ -272,6 +277,8 @@ class ControllerExtensionModuleTelegramWebhook extends Controller {
      * --------------------------
      */
     private function action($entities,$text){
+        $this->load->model('localisation/language');
+        $languages = $this->model_localisation_language->getLanguages();
         $this->load->language('extension/module/telegram/core');
         $commands = $this->bot_command_value;
         $check = 0;
@@ -291,21 +298,24 @@ class ControllerExtensionModuleTelegramWebhook extends Controller {
 
             if (!empty($commands)) {
                 foreach ($commands as $command) {
-                    if ($action == '/'.$command['command_value_description'][$this->bot_language]['name']) {
-                        if ($command['status'] == 1 ) {
-                            $command_url = 'extension/module/telegram/command/'.$command['command_file'];
-                            $command_ins = $command_url.'/run';
-                            $data_com = array(
-                                'request'           => $this->request,
-                                'command_url'       => $command_url,
-                                'command_insert'    => $command_ins,
-                                'file'              => $command['command_file'],
-                                'command_action'    => '/'.$command['command_value_description'][$this->bot_language]['name'],
-                                'action'            => 'run'
-                            );
-                            ++$check;
-                            $this->log($data_com);
-                            $this->load->controller($command_ins, $data_com );
+                    foreach ($languages as $language) {
+                        $language_id = $language['language_id']; 
+                        if ($action == '/'.$command['command_value_description'][$language_id]['name']) {
+                            if ($command['status'] == 1 ) {
+                                $command_url = 'extension/module/telegram/command/'.$command['command_file'];
+                                $command_ins = $command_url.'/run';
+                                $data_com = array(
+                                    'request'           => $this->request,
+                                    'command_url'       => $command_url,
+                                    'command_insert'    => $command_ins,
+                                    'file'              => $command['command_file'],
+                                    'command_action'    => '/'.$command['command_value_description'][$language_id]['name'],
+                                    'action'            => 'run'
+                                );
+                                ++$check;
+                                $this->log($data_com);
+                                $this->load->controller($command_ins, $data_com );
+                            }
                         }
                     }
                 }
