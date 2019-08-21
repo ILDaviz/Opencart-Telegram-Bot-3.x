@@ -29,5 +29,6 @@ Come install it?
 8. Done!
 
 ## Change log
+- V179 -- Fix trigger
 - V173 -- Fix install.xml
 - V172 -- Relase module
