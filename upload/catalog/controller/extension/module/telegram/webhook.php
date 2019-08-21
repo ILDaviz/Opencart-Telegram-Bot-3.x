@@ -205,48 +205,48 @@ class ControllerExtensionModuleTelegramWebhook extends Controller {
             $triggers = $this->bot_trigger_value;
         }
         if (isset($triggers)) {
-            foreach ($triggers as $trigger) {
-
-                $presence_a = 0;
-                $presence_b = 0;
-                
+            foreach ($triggers as $trigger) {                
                 //if is present "," A Key
                 $trigger_value_keyword_a = strtolower($trigger['trigger_value_keyword_a'][$language_id]['value']);
-                if (strstr($trigger_value_keyword_a, ',')) {
-                    $keyword_a = $trigger_value_keyword_a; //tempi, quanto 
-                    $keywords_a = explode(',',$keyword_a);
-
-                    foreach ($keywords_a as $ka) {
-                        if (strpos($string, $ka) == true) {
+                if (!empty($trigger_value_keyword_a)) {
+                    if (strpos($trigger_value_keyword_a, ',') !== false ) {
+                        $keyword_a = $trigger_value_keyword_a; //tempi, quanto 
+                        $keywords_a = explode(',',$keyword_a);
+                        $presence_a = 0;
+                        foreach ($keywords_a as $ka) {
+                            if (strpos($string, $ka) !== false) {
+                                ++$presence_a;
+                            }
+                        }
+                    } else {
+                        $presence_a = 0;
+                        if (strpos($string, $trigger_value_keyword_a) !== false) {
                             ++$presence_a;
                         }
-                    }
-                } else {
-                    $keywords_a = $trigger_value_keyword_a; //tempi, quanto 
-                    if (strpos($string, $keywords_a) == true) {
-                        ++$presence_a;
                     }
                 }
 
                 //if is present "," B Key
-                $trigger_value_keyword_b = $trigger['trigger_value_keyword_b'][$language_id]['value'];
-                if (strstr($trigger_value_keyword_b, ',')) {
-                    $keyword_b = $trigger_value_keyword_b; //tempi, quanto 
-                    $keywords_b = explode(',',$keyword_a);
-
-                    foreach ($keywords_b as $ka) {
-                        if (strpos($string, $ka) == true) {
+                $trigger_value_keyword_b = strtolower($trigger['trigger_value_keyword_b'][$language_id]['value']);
+                if (!empty($trigger_value_keyword_b)) {
+                    if (strpos($trigger_value_keyword_b, ',') !== false ) {
+                        $keyword_b = $trigger_value_keyword_b; //tempi, quanto 
+                        $keywords_b = explode(',',$keyword_b);
+                         $presence_b = 0;
+                        foreach ($keywords_b as $ka) {
+                            if (strpos($string, $ka) !== false) {
+                                ++$presence_b;
+                            }
+                        }
+                    } else {
+                        $presence_b = 0;
+                        if (strpos($string, $trigger_value_keyword_b) !== false) {
                             ++$presence_b;
                         }
                     }
-                } else {
-                    $keywords_b = $trigger_value_keyword_b; //tempi, quanto 
-                    if (strpos($string, $keywords_b) == true) {
-                        ++$presence_a;
-                    }
                 }
     
-                if ($trigger['role'] == 0) {
+                if ($trigger['role'] == 1) {
                     if ($presence_a > 0 || $presence_b > 0) {
                         return $trigger['trigger_value_description'][$language_id]['value'];
                         exit();
