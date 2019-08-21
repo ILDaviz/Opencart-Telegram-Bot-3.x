@@ -16,8 +16,7 @@ class ModelExtensionModuleTelegramCore extends Model {
 
       $this->db->query("CREATE TABLE IF NOT EXISTS " . DB_PREFIX . "telegram_log (log_id int(20) NOT NULL AUTO_INCREMENT,event text,chat_id int(20),message_id int(20),output_id int(20),action_id int(20),register int(1),date DATETIME,PRIMARY KEY (log_id));");
 
-      $this->db->query("
-      CREATE TABLE IF NOT EXISTS " . DB_PREFIX . "telegram_actions (action_id int(20) NOT NULL AUTO_INCREMENT,chat_id int(20),action_old text,action_new text,status_action int(1),bot_command text,PRIMARY KEY (action_id));");
+      $this->db->query("CREATE TABLE IF NOT EXISTS " . DB_PREFIX . "telegram_actions (action_id int(20) NOT NULL AUTO_INCREMENT,chat_id int(20),action_old text,action_new text,status_action int(1),bot_command text,PRIMARY KEY (action_id));");
     }
 
     public function uninstall() {
